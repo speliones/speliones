@@ -69,7 +69,7 @@ def check_deadline(round_num):
     return True, f"✅ Spėjimus galima teikti iki {time_str}."
 
 def get_drivers():
-    """Gauna vairuotojus. Jei API tuščias, grąžina pilną 2026 m. sąrašą."""
+    """Gauna vairuotojus. Jei API tuščias, grąžina pilną 2026 m. sąrašą (11 komandų, 22 vairuotojai)."""
     url = f"http://api.jolpi.ca/ergast/f1/{SEASON}/driverStandings.json"
     try:
         response = requests.get(url, timeout=5)
@@ -82,23 +82,24 @@ def get_drivers():
             formatted.append({"display": f"[{c}] {d['givenName']} {d['familyName']} ({d['code']})", "team": c, "name": d['familyName']})
         formatted.sort(key=lambda x: (x['team'], x['name']))
         
-        if len(formatted) > 5: # Jei grąžino normalų sąrašą
+        if len(formatted) > 5:
             return [d['display'] for d in formatted]
         else:
             raise ValueError("Per mažai vairuotojų")
     except:
-        # Pilnas 2025/2026 m. sąrašas testavimui / sezono pradžiai
+        # Atnaujintas 2026 m. sąrašas su naujais komandų pavadinimais ir Cadillac
         return [
             "[Alpine] Jack Doohan (DOO)", "[Alpine] Pierre Gasly (GAS)",
-            "[Aston Martin] Fernando Alonso (ALO)", "[Aston Martin] Lance Stroll (STR)",
+            "[Aston Martin Aramco] Fernando Alonso (ALO)", "[Aston Martin Aramco] Lance Stroll (STR)",
+            "[Atlassian Williams] Alexander Albon (ALB)", "[Atlassian Williams] Carlos Sainz (SAI)",
+            "[Audi Revolut] Gabriel Bortoleto (BOR)", "[Audi Revolut] Nico Hulkenberg (HUL)",
+            "[Cadillac] Sergio Perez (PER)", "[Cadillac] Valtteri Bottas (BOT)",
             "[Ferrari] Charles Leclerc (LEC)", "[Ferrari] Lewis Hamilton (HAM)",
-            "[Haas] Esteban Ocon (OCO)", "[Haas] Oliver Bearman (BEA)",
-            "[McLaren] Lando Norris (NOR)", "[McLaren] Oscar Piastri (PIA)",
+            "[McLaren Mastercard] Lando Norris (NOR)", "[McLaren Mastercard] Oscar Piastri (PIA)",
             "[Mercedes] Andrea Kimi Antonelli (ANT)", "[Mercedes] George Russell (RUS)",
-            "[RB] Isack Hadjar (HAD)", "[RB] Yuki Tsunoda (TSU)",
-            "[Red Bull] Liam Lawson (LAW)", "[Red Bull] Max Verstappen (VER)",
-            "[Sauber] Gabriel Bortoleto (BOR)", "[Sauber] Nico Hulkenberg (HUL)",
-            "[Williams] Alexander Albon (ALB)", "[Williams] Carlos Sainz (SAI)"
+            "[Oracle Red Bull Racing] Liam Lawson (LAW)", "[Oracle Red Bull Racing] Max Verstappen (VER)",
+            "[TGR Haas] Esteban Ocon (OCO)", "[TGR Haas] Oliver Bearman (BEA)",
+            "[Visa Cash App RB] Isack Hadjar (HAD)", "[Visa Cash App RB] Yuki Tsunoda (TSU)"
         ]
 
 def extract_code(driver_str):
@@ -262,7 +263,6 @@ with tab1:
         picks = {}
         pick_values = []
         
-        # Sukuriame dviejų eilių po 5 stulpelius išdėstymą
         row1 = st.columns(5)
         row2 = st.columns(5)
         cols = row1 + row2 
@@ -290,7 +290,7 @@ with tab1:
 with tab2:
     st.header(f"Rezultatai: Etapas #{round_num}")
     
-    # Tik Admin gali paleisti skaičiavimą
+    # Tik Admin gali paleisti skaičiavimą ir išsaugojimą DB
     if st.session_state.user == ADMIN_USER:
         st.markdown("---")
         st.warning("👮 ADMIN ZONA")
@@ -301,11 +301,11 @@ with tab2:
                 else: st.error(res_msg)
         st.markdown("---")
 
-    # Paprasti vartotojai tiesiog mato išsaugotus rezultatus iš DB
+    # Visi vartotojai mato išsaugotus rezultatus
     preds = supabase.table("predictions").select("*").eq("round_number", round_num).eq("season", SEASON).order("total_points", desc=True).execute().data
     
     if not preds:
-        st.info("Šiam etapui spėjimų dar nėra.")
+        st.info("Šiam etapui spėjimų dar nėra arba Admin dar nepaskaičiavo rezultatų.")
     else:
         table_data = []
         for p in preds:
@@ -329,11 +329,9 @@ with tab3:
     
     if all_preds:
         df_season = pd.DataFrame(all_preds)
-        # Sumuojame pagal vartotoją
         leaderboard = df_season.groupby("username")['total_points'].sum().reset_index()
         leaderboard = leaderboard.sort_values(by="total_points", ascending=False).reset_index(drop=True)
         
-        # Pridedame "Vieta" stulpelį
         leaderboard.index += 1
         leaderboard.insert(0, 'Vieta', leaderboard.index)
         
