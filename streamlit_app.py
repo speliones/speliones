@@ -7,8 +7,8 @@ from dateutil import parser
 from zoneinfo import ZoneInfo
 
 # --- KONFIGŪRACIJA ---
-SEASON = 2025
-TEST_MODE = True 
+SEASON = 2026
+TEST_MODE = False 
 TIMEZONE = ZoneInfo("Europe/Vilnius")
 ADMIN_USER = "Admin"  # Vartotojas, kuris turi teisę spausti mygtuką
 
