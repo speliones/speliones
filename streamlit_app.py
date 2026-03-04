@@ -9,8 +9,8 @@ from zoneinfo import ZoneInfo # Reikalingas LT laikui
 # --- KONFIGŪRACIJA ---
 
 # Nustatymai
-SEASON = 2026           # Einamasis sezonas
-TEST_MODE = False       # Pakeisk į True, jei nori testuoti (leidžia spėti bet kada)
+SEASON = 2025           # Einamasis sezonas
+TEST_MODE = True       # Pakeisk į True, jei nori testuoti (leidžia spėti bet kada)
 TIMEZONE = ZoneInfo("Europe/Vilnius")
 
 # Supabase prisijungimas
