@@ -87,19 +87,19 @@ def get_drivers():
         else:
             raise ValueError("Per mažai vairuotojų")
     except:
-        # Atnaujintas 2026 m. sąrašas su naujais komandų pavadinimais ir Cadillac
+        # Atnaujintas 2026 m. sąrašas pagal oficialią F1 svetainę
         return [
-            "[Alpine] Jack Doohan (DOO)", "[Alpine] Pierre Gasly (GAS)",
-            "[Aston Martin Aramco] Fernando Alonso (ALO)", "[Aston Martin Aramco] Lance Stroll (STR)",
-            "[Atlassian Williams] Alexander Albon (ALB)", "[Atlassian Williams] Carlos Sainz (SAI)",
-            "[Audi Revolut] Gabriel Bortoleto (BOR)", "[Audi Revolut] Nico Hulkenberg (HUL)",
+            "[Alpine] Franco Colapinto (COL)", "[Alpine] Pierre Gasly (GAS)",
+            "[Aston Martin] Fernando Alonso (ALO)", "[Aston Martin] Lance Stroll (STR)",
+            "[Audi] Gabriel Bortoleto (BOR)", "[Audi] Nico Hulkenberg (HUL)",
             "[Cadillac] Sergio Perez (PER)", "[Cadillac] Valtteri Bottas (BOT)",
             "[Ferrari] Charles Leclerc (LEC)", "[Ferrari] Lewis Hamilton (HAM)",
-            "[McLaren Mastercard] Lando Norris (NOR)", "[McLaren Mastercard] Oscar Piastri (PIA)",
-            "[Mercedes] Andrea Kimi Antonelli (ANT)", "[Mercedes] George Russell (RUS)",
-            "[Oracle Red Bull Racing] Liam Lawson (LAW)", "[Oracle Red Bull Racing] Max Verstappen (VER)",
-            "[TGR Haas] Esteban Ocon (OCO)", "[TGR Haas] Oliver Bearman (BEA)",
-            "[Visa Cash App RB] Isack Hadjar (HAD)", "[Visa Cash App RB] Yuki Tsunoda (TSU)"
+            "[Haas F1 Team] Esteban Ocon (OCO)", "[Haas F1 Team] Oliver Bearman (BEA)",
+            "[McLaren] Lando Norris (NOR)", "[McLaren] Oscar Piastri (PIA)",
+            "[Mercedes] George Russell (RUS)", "[Mercedes] Kimi Antonelli (ANT)",
+            "[Racing Bulls] Arvid Lindblad (LIN)", "[Racing Bulls] Liam Lawson (LAW)",
+            "[Red Bull Racing] Isack Hadjar (HAD)", "[Red Bull Racing] Max Verstappen (VER)",
+            "[Williams] Alexander Albon (ALB)", "[Williams] Carlos Sainz (SAI)"
         ]
 
 def extract_code(driver_str):
